@@ -82,8 +82,6 @@ namespace currencyNew
                 DateTime requestDate = DateTime.Now;
                 requestDTO.RequestDate = requestDate;
 
-                foreach (var entry in finalResultFromAPI) Console.WriteLine(entry.ToString());
-
                 convertedData = Helper.convertUriDataToExchangeRate(finalResultFromAPI);
 
 
@@ -116,13 +114,12 @@ namespace currencyNew
             RequestDTO searchedRequest= cache.CheckIfRequestExistsInCache(requestDTO);
             if(searchedRequest is null)
             {
-                Console.WriteLine("searched request is null");
+                
                 return null;
             }
             else
             {
                 
-                //Console.WriteLine("updating requestDate");
                 RequestDTO requestDTOupdated=cache.UpdateRequestDate(searchedRequest);
                 if(requestDTOupdated is not null) return cache.GetExchangeRates(requestDTOupdated);
                 return null;

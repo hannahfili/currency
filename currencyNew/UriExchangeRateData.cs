@@ -24,7 +24,7 @@ namespace currencyNew
 
         public override string ToString()
         {
-            return "date: " + this.date + "\tvalue:" + this.value;
+            return "date: " + this.date + "\tvalue: " + this.value;
         }
 
     }

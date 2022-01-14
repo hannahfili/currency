@@ -21,8 +21,7 @@ namespace currencyNew
             }
             string address = string.Concat(baseAddress, quotedCurrency, ".", baseCurrency, ".SP00.A?startPeriod=", dateAsString, "&endPeriod=", dateAsString);
 
-            //string xml = await GetDataFromExternalAPI(address);
-            //List<UriExchangeRateData> uriExchangeRateDatas = XmlKeeper.createListFromXmlString(xml);
+            
 
             var xml = await GetDataFromExternalAPI(address);
             if (xml is Result) return xml;
@@ -48,7 +47,6 @@ namespace currencyNew
 
                 catch (Exception)
                 {
-                    //xml = "external api error";
                     return new Result("error", "external api error");
                 }
 
