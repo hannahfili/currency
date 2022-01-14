@@ -18,7 +18,7 @@ namespace currencyNew
 
             if (string.IsNullOrEmpty(xml))
             {
-                Console.WriteLine("xml is empty or null");
+                
                 return uriExchangeRateDatas;
             }
             
@@ -31,7 +31,6 @@ namespace currencyNew
                 {
                     
                     date= xtr.GetAttribute("value").ToString();
-                    //Console.WriteLine(xtr.GetAttribute("value").ToString());
                     
                 }
                 if (xtr.NodeType == XmlNodeType.Element && xtr.Name == "generic:ObsValue")
@@ -39,13 +38,8 @@ namespace currencyNew
                     value= xtr.GetAttribute("value").ToString();
                     xrd = new UriExchangeRateData(date, value);
                     uriExchangeRateDatas.Add(xrd);
-                    //Console.WriteLine(xrd.ToString());
                 }
             }
-            //Console.WriteLine("---------------------");
-            //Console.WriteLine("swiezo utworzona lista z xml");
-            //foreach (var i in uriExchangeRateDatas) Console.WriteLine(i.ToString());
-            //Console.WriteLine("---------------------");
             return uriExchangeRateDatas;
 
         }

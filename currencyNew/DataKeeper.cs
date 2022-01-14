@@ -33,10 +33,8 @@ namespace currencyNew
             string xmlString = (string)xml;
 
             List<UriExchangeRateData> uriExchangeRateDatas = XmlKeeper.createListFromXmlString(xmlString);
-            //Console.WriteLine(uriExchangeRateDatas.Count());
             if (uriExchangeRateDatas.Count() == 0)
             {
-                //Console.WriteLine("dodaje first elem");
                 UriExchangeRateData firstElem = DataChecker.findNewStartDate(uriRequestData, theOtherWayRound);
                 uriExchangeRateDatas.Add(firstElem);
             }
@@ -47,8 +45,7 @@ namespace currencyNew
             uriExchangeRateDatas.RemoveAll(uxrd => uxrd.value.ToUpper() == "NAN");
             if (theOtherWayRound) Calculator.countTheOtherWayRound(uriExchangeRateDatas);
             
-            //foreach (var i in uriExchangeRateDatas) Console.WriteLine(i.ToString());
-
+            
 
             return uriExchangeRateDatas;
         }

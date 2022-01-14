@@ -55,22 +55,16 @@ namespace currencyNew
             UriExchangeRateData firstElem = uriExchangeRateDatas[0];
             if(firstElem.date != uriRequestData.StartDate)
             {
-                //Console.WriteLine("szukam nowej daty poczatkowej");
-                //Console.WriteLine("przed dodaniem");
-                //foreach (var i in uriExchangeRateDatas) Console.WriteLine(i.ToString());
-
+                
                 firstElem = findNewStartDate(uriRequestData, theOtherWayRound);
                 uriExchangeRateDatas.Insert(0, firstElem);
 
-                //Console.WriteLine("po dodaniu");
-                //foreach (var i in uriExchangeRateDatas) Console.WriteLine(i.ToString());
                 return;
             }
             if (firstElem.date == uriRequestData.StartDate && firstElem.value.ToUpper()=="NAN")
             {
                 firstElem=findNewStartDate(uriRequestData, theOtherWayRound);
-                //Console.WriteLine("we have to change first elem");
-                //Console.WriteLine("first elem and start date are equal");
+                
                 uriExchangeRateDatas[0] = firstElem;
             }            
             
@@ -89,7 +83,6 @@ namespace currencyNew
                 
                 
                 string dateToCheck = dateTimeToCheck.ToString("yyyy-MM-dd");
-                //Console.WriteLine("data do sprawdzenia: " + dateToCheck);
 
                 var result =ExternalAPI.GetDataFromExternalAPIWhenStartDateEqualsEndDate(dateToCheck, uriRequestData, theOtherWayRound).Result;
                 if (result is UriExchangeRateData) newStartDate = (UriExchangeRateData)result;

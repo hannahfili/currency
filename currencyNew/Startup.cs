@@ -58,7 +58,6 @@ namespace currencyNew
             services.AddControllers();
             //cache
             services.AddSingleton<IOwnDictionary, OwnDictionary>();
-            services.AddSingleton<IDateValidator, DateValidator>();
 
             services.AddSwaggerGen(c =>
             {

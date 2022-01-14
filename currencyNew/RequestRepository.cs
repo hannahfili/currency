@@ -41,15 +41,6 @@ namespace currencyNew
             {
                 finalResult = (List<ExchangeRate>)resultFromCache;
 
-                Console.WriteLine("-------------------------");
-                Console.WriteLine("WYNIKI Z CACHE'A");
-                Console.WriteLine(finalResult[0].Request.ToString());
-
-                foreach (var elem in finalResult)
-                {
-                    Console.WriteLine(elem.ToString());
-                }
-                Console.WriteLine("-------------------------");
                 return finalResult;
             }
 
@@ -65,15 +56,6 @@ namespace currencyNew
                 cache.AddItemToDictionary(requestDTO, resultFromDataBase);
                 finalResult = (List<ExchangeRate>)resultFromDataBase;
 
-                Console.WriteLine("-------------------------");
-                Console.WriteLine("WYNIKI Z BAZY DANYCH");
-                Console.WriteLine(finalResult[0].Request.ToString());
-
-                foreach (var elem in finalResult)
-                {
-                    Console.WriteLine(elem.ToString());
-                }
-                Console.WriteLine("-------------------------");
 
                 return finalResult;
             }
@@ -84,7 +66,6 @@ namespace currencyNew
             bool quotedCurrencyIsEuro = uriRequestData.QuotedCurrency.ToUpper() == "EUR" ? true : false;
 
             var resultFromAPI = new object();
-            //Console.WriteLine("POBIERAM DANE Z EXTERNAL API");
 
             if (baseCurrencyIsEuro && !quotedCurrencyIsEuro) resultFromAPI = await DataKeeper.GetMonoDataFromExternalAPI(uriRequestData);
             else if (!baseCurrencyIsEuro && quotedCurrencyIsEuro) resultFromAPI = await DataKeeper.GetMonoDataFromExternalAPI(uriRequestData, true);
@@ -111,18 +92,6 @@ namespace currencyNew
                 resultFromDataBase = (List<ExchangeRate>)dbRepository.GetExchangeRates(requestDTO.Id);
                 cache.AddItemToDictionary(requestDTO, resultFromDataBase);
 
-
-
-
-                //Console.WriteLine("-------------------------");
-                //Console.WriteLine("SPRAWDZAM ZAPIS Z CACHE'A");
-                //foreach (var entry in _dictionary)
-                //{
-                //    Console.WriteLine(entry.Key.ToString());
-                //    foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
-                //}
-                //Console.WriteLine("SPRAWDZAM ZAPIS Z CACHE'A");
-                //Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@@@");
             }
 
 

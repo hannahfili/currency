@@ -30,9 +30,6 @@ namespace currencyNew
             foreach (var elem in exrDTOs) {
                 request.ExchangeRates.Add(elem);
             }
-            //Console.WriteLine("SAVE REQUEST");
-            //foreach (var e in request.ExchangeRates) Console.WriteLine(e.ToString());
-            //Console.WriteLine("------------------------------");
 
             try
             {
@@ -41,9 +38,9 @@ namespace currencyNew
                 return CheckIfRequestExistsInDataBase(new RequestDTO(uriRequestData));
 
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Console.WriteLine($"save request err: {e.Message}");
+                
             }
             return null;
 

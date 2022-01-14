@@ -52,16 +52,7 @@ namespace currencyNew.Controllers
 
             var result = repository.Get(uriRequestData).Result;
 
-            int n = 1;
-            Console.WriteLine("ZAWARTOSC DICTIONARY:");
-            foreach (var entry in _dictionary.GetDictionary())
-            {
-                Console.WriteLine(n+" "+entry.Key.ToString());
-                //foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
-                n++;
-            }
-            Console.WriteLine("@@@@@@@@@@@@@@@@@@@");
-
+            
             if (result is Result)
             {
                 res = (Result)result;
