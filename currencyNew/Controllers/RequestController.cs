@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using currencyNew.APIKeyFilter;
+using currencyNew.Contracts;
 using currencyNew.DataTransferObjects;
 using currencyNew.Models;
 using Microsoft.AspNetCore.Http;
@@ -22,32 +23,21 @@ namespace currencyNew.Controllers
         private MyDbContext _myDbContext;
         private IMapper _mapper;
         private IOwnDictionary _dictionary;
+        private ILoggerManager _logger;
 
-        public RequestController(MyDbContext myDbContext, IMapper mapper, IOwnDictionary dictionary)
+        public RequestController(MyDbContext myDbContext, IMapper mapper, IOwnDictionary dictionary, ILoggerManager logger)
         {
             _myDbContext = myDbContext;
             _mapper = mapper;
             _dictionary = dictionary;
+            _logger = logger;
         }
 
-        //public IList<Request> Get()
-        //{
-        //    var list = DataKeeper.Get(myDbContext);
-
-        //    //var list = this.myDbContext.Requests.ToList();
-
-        //    foreach (Request elem in list)
-        //    {
-        //        Console.WriteLine($"{elem.Id} + {elem.StartDate} + {elem.EndDate} + {elem.baseCurrency} + {elem.quotedCurrency}");
-        //    }
-
-
-        //    return list;
-        //}
+        
         [HttpGet("{quotedCurrency}/{baseCurrency}/{startDate}/{endDate}")]
         public IActionResult Get(string quotedCurrency, string baseCurrency, string startDate, string endDate)
         {
-
+            //check request headers
             Dictionary<string, string> requestHeaders = new Dictionary<string, string>();
             foreach (var header in Request.Headers) requestHeaders.Add(header.Key, header.Value);
             APIKeyAuthentication apiKeyAuthentication = new APIKeyAuthentication(_myDbContext);
@@ -61,21 +51,21 @@ namespace currencyNew.Controllers
 
 
             var result = repository.Get(uriRequestData).Result;
-            
+
             int n = 1;
             Console.WriteLine("ZAWARTOSC DICTIONARY:");
             foreach (var entry in _dictionary.GetDictionary())
             {
-                Console.Write(n+" ");
-                n++;
-                Console.WriteLine(entry.Key.ToString());
+                Console.WriteLine(n+" "+entry.Key.ToString());
                 //foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
+                n++;
             }
             Console.WriteLine("@@@@@@@@@@@@@@@@@@@");
 
-            if(result is Result)
+            if (result is Result)
             {
                 res = (Result)result;
+                _logger.LogError(res.resultInfo);
                 if (res.resultType == "badRequest") return BadRequest(res.resultInfo);
                 else if (res.resultType == "notFound") return NotFound(res.resultInfo);
                 else if (res.resultType == "error") return NotFound(res.resultInfo);

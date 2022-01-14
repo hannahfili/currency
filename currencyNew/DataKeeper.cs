@@ -26,21 +26,17 @@ namespace currencyNew
 
             string address = string.Concat(baseAddress, quotedCurrency, ".", baseCurrency, ".SP00.A?startPeriod=", uriRequestData.StartDate, "&endPeriod=", uriRequestData.EndDate);
 
-            //string xml = await GetDataFromExternalAPI(address);
-            //if (xml == "external api error") return false;
-            //List<UriExchangeRateData> uriExchangeRateDatas = XmlKeeper.createListFromXmlString(xml);
-
+      
             var xml = await ExternalAPI.GetDataFromExternalAPI(address);
             if (xml is Result) return xml;
 
             string xmlString = (string)xml;
 
             List<UriExchangeRateData> uriExchangeRateDatas = XmlKeeper.createListFromXmlString(xmlString);
-            Console.WriteLine(uriExchangeRateDatas.Count());
-            //UriExchangeRateData firstElem = null;
+            //Console.WriteLine(uriExchangeRateDatas.Count());
             if (uriExchangeRateDatas.Count() == 0)
             {
-                Console.WriteLine("dodaje first elem");
+                //Console.WriteLine("dodaje first elem");
                 UriExchangeRateData firstElem = DataChecker.findNewStartDate(uriRequestData, theOtherWayRound);
                 uriExchangeRateDatas.Add(firstElem);
             }
@@ -48,9 +44,10 @@ namespace currencyNew
             {
                 DataChecker.addNewStartDateIfNoResultFoundForCurrentStartDate(uriExchangeRateDatas, uriRequestData, theOtherWayRound);
             }
-            if (theOtherWayRound) Calculator.countTheOtherWayRound(uriExchangeRateDatas);
             uriExchangeRateDatas.RemoveAll(uxrd => uxrd.value.ToUpper() == "NAN");
-            foreach (var i in uriExchangeRateDatas) Console.WriteLine(i.ToString());
+            if (theOtherWayRound) Calculator.countTheOtherWayRound(uriExchangeRateDatas);
+            
+            //foreach (var i in uriExchangeRateDatas) Console.WriteLine(i.ToString());
 
 
             return uriExchangeRateDatas;
@@ -70,22 +67,10 @@ namespace currencyNew
             List<UriExchangeRateData> euroVsBaseCurrencyResultList = (List<UriExchangeRateData>)euroVsBaseCurrencyResult;
             List<UriExchangeRateData> euroVsQuotedCurrencyResultList = (List<UriExchangeRateData>)euroVsQuotedCurrencyResult;
 
-            //bool same = true;
-
-            //for(int i=0; i<euroVsBaseCurrencyResultList.Count(); i++)
-            //{
-            //    if (!euroVsBaseCurrencyResultList[i].Equals(euroVsQuotedCurrencyResultList[i]))
-            //    {
-            //        same = false;
-            //        break;
-            //    }
-            //}
-            //if(same) Console.WriteLine("listy maja takie same daty");
+            
             if (euroVsBaseCurrencyResultList.SequenceEqual(euroVsQuotedCurrencyResultList))
             {
-                //List<UriExchangeRateData> desiredExchangeRateData = new List<UriExchangeRateData>();
-                //desiredExchangeRateData= Calculator.countNewCurrencyRate(euroVsBaseCurrencyResultList, euroVsQuotedCurrencyResultList);
-                //foreach (var i in uriExchangeRateDatas) Console.WriteLine(i.ToString());
+                
                 return Calculator.countNewCurrencyRate(euroVsBaseCurrencyResultList, euroVsQuotedCurrencyResultList);
             }
             

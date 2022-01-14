@@ -30,9 +30,9 @@ namespace currencyNew
             foreach (var elem in exrDTOs) {
                 request.ExchangeRates.Add(elem);
             }
-            Console.WriteLine("SAVE REQUEST");
-            foreach (var e in request.ExchangeRates) Console.WriteLine(e.ToString());
-            Console.WriteLine("------------------------------");
+            //Console.WriteLine("SAVE REQUEST");
+            //foreach (var e in request.ExchangeRates) Console.WriteLine(e.ToString());
+            //Console.WriteLine("------------------------------");
 
             try
             {

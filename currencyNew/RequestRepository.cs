@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using currencyNew.Contracts;
 using currencyNew.DataTransferObjects;
 using currencyNew.Models;
 using System;
@@ -33,7 +34,7 @@ namespace currencyNew
             if (!DataChecker.endLaterThanStart(uriRequestData)) return new Result("badRequest","startDate is later than endDate");
 
 
-            //check cache first
+            ////check cache first
             RequestDTO requestDTO = new RequestDTO(uriRequestData);
             var resultFromCache = CheckAndUpdateCache(requestDTO, cache);
             if (resultFromCache is List<ExchangeRate>)
@@ -43,7 +44,7 @@ namespace currencyNew
                 Console.WriteLine("-------------------------");
                 Console.WriteLine("WYNIKI Z CACHE'A");
                 Console.WriteLine(finalResult[0].Request.ToString());
-                
+
                 foreach (var elem in finalResult)
                 {
                     Console.WriteLine(elem.ToString());
@@ -52,7 +53,7 @@ namespace currencyNew
                 return finalResult;
             }
 
-            //// check database second
+            // check database second
             DataBase dbRepository = new DataBase(_myDbContext, _mapper);
             List<ExchangeRate> resultFromDataBase = new List<ExchangeRate>();
             var requestId = CheckAndUpdateDataBase(requestDTO, dbRepository);
@@ -83,7 +84,7 @@ namespace currencyNew
             bool quotedCurrencyIsEuro = uriRequestData.QuotedCurrency.ToUpper() == "EUR" ? true : false;
 
             var resultFromAPI = new object();
-            Console.WriteLine("POBIERAM DANE Z EXTERNAL API");
+            //Console.WriteLine("POBIERAM DANE Z EXTERNAL API");
 
             if (baseCurrencyIsEuro && !quotedCurrencyIsEuro) resultFromAPI = await DataKeeper.GetMonoDataFromExternalAPI(uriRequestData);
             else if (!baseCurrencyIsEuro && quotedCurrencyIsEuro) resultFromAPI = await DataKeeper.GetMonoDataFromExternalAPI(uriRequestData, true);
@@ -91,21 +92,27 @@ namespace currencyNew
             else return new Result("badRequest", "uri is not correct");
 
             List<UriExchangeRateData> finalResultFromAPI = new List<UriExchangeRateData>();
-            
+            List<ExchangeRate> convertedData = new List<ExchangeRate>();
+
+
             if (resultFromAPI is List<UriExchangeRateData>)
             {
                 finalResultFromAPI = (List<UriExchangeRateData>)resultFromAPI;
                 DateTime requestDate = DateTime.Now;
-                requestDTO.RequestDate = requestDate;                
+                requestDTO.RequestDate = requestDate;
 
-                List<ExchangeRate> convertedData = Helper.convertUriDataToExchangeRateDTOs(finalResultFromAPI);
-                requestDTO.Id=(Guid)dbRepository.SaveNewRequest(uriRequestData, convertedData, requestDate);
+                foreach (var entry in finalResultFromAPI) Console.WriteLine(entry.ToString());
+
+                convertedData = Helper.convertUriDataToExchangeRate(finalResultFromAPI);
+
+
+
+                requestDTO.Id = (Guid)dbRepository.SaveNewRequest(uriRequestData, convertedData, requestDate);
                 resultFromDataBase = (List<ExchangeRate>)dbRepository.GetExchangeRates(requestDTO.Id);
                 cache.AddItemToDictionary(requestDTO, resultFromDataBase);
 
-                //cache.SaveExchangeRateList(requestDTO, finalResultFromAPI);
-                
-                
+
+
 
                 //Console.WriteLine("-------------------------");
                 //Console.WriteLine("SPRAWDZAM ZAPIS Z CACHE'A");
@@ -119,7 +126,7 @@ namespace currencyNew
             }
 
 
-            return resultFromDataBase;
+            return convertedData;
         }
 
         public object CheckAndUpdateDataBase(RequestDTO requestDTO, DataBase dbRepository)
@@ -146,9 +153,10 @@ namespace currencyNew
             else
             {
                 
-                Console.WriteLine("updating requestDate");
+                //Console.WriteLine("updating requestDate");
                 RequestDTO requestDTOupdated=cache.UpdateRequestDate(searchedRequest);
-                return cache.GetExchangeRates(requestDTOupdated);
+                if(requestDTOupdated is not null) return cache.GetExchangeRates(requestDTOupdated);
+                return null;
             }
             
         }

@@ -13,7 +13,7 @@ namespace currencyNew
             decimal decimalValue = 0;
             foreach(var elem in uriExchangeRateDatas){
 
-                //elem.value += "M";
+                
                 try
                 {
                     decimalValue = Convert.ToDecimal(elem.value, new CultureInfo("en-US"));

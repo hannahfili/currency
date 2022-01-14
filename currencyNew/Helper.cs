@@ -10,7 +10,7 @@ namespace currencyNew
 {
     public static class Helper
     {
-        public static List<ExchangeRate> convertUriDataToExchangeRateDTOs(List<UriExchangeRateData> uriExchangeRateDatas)
+        public static List<ExchangeRate> convertUriDataToExchangeRate(List<UriExchangeRateData> uriExchangeRateDatas)
         {
             List<ExchangeRate> convertedData = new List<ExchangeRate>();
             foreach (var elem in uriExchangeRateDatas)

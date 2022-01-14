@@ -1,0 +1,51 @@
+Wyniki testów:
+
+
+1) -----------------------------------------------------------------------------------------------------------------------------------------------
+abs -n 100 -c 2 -H "ApiKey:P14BrtsbU158y8E1" https://127.0.0.1:5001/api/request/PLN/GBP/2021-04-18/2021-05-18
+
+
+This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient).....done
+
+
+Server Software:        Kestrel
+Server Hostname:        127.0.0.1
+Server Port:            5001
+SSL/TLS Protocol:       TLSv1.2,ECDHE-RSA-AES256-GCM-SHA384,2048,256
+Server Temp Key:        ECDH P-384 384 bits
+
+Document Path:          /api/request/PLN/GBP/2021-04-18/2021-05-18
+Document Length:        2071 bytes
+
+Concurrency Level:      2
+Time taken for tests:   48.234 seconds
+Complete requests:      100
+Failed requests:        0
+Total transferred:      223200 bytes
+HTML transferred:       207100 bytes
+Requests per second:    2.07 [#/sec] (mean)
+Time per request:       964.688 [ms] (mean)
+Time per request:       482.344 [ms] (mean, across all concurrent requests)
+Transfer rate:          4.52 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        9   17  11.7     14     118
+Processing:   231  912 471.8    773    3071
+Waiting:      231  910 469.4    773    3011
+Total:        243  928 476.4    788    3189
+
+Percentage of the requests served within a certain time (ms)
+  50%    788
+  66%   1161
+  75%   1321
+  80%   1437
+  90%   1548
+  95%   1625
+  98%   1673
+  99%   3189
+ 100%   3189 (longest request)

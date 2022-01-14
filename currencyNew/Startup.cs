@@ -1,3 +1,4 @@
+using currencyNew.Contracts;
 using currencyNew.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,8 +11,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +25,7 @@ namespace currencyNew
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
         }
 
         public IConfiguration Configuration { get; }
@@ -47,11 +51,14 @@ namespace currencyNew
             //automapper
             services.AddAutoMapper(typeof(Startup));
 
-            
-            
+
+            //logger
+            services.AddSingleton<ILoggerManager, LoggerManager>();
+
             services.AddControllers();
             //cache
             services.AddSingleton<IOwnDictionary, OwnDictionary>();
+            services.AddSingleton<IDateValidator, DateValidator>();
 
             services.AddSwaggerGen(c =>
             {

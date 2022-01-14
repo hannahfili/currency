@@ -57,3 +57,6 @@ C:\Users\Hanna\OneDrive\Dokumenty\studia\3 rok\programowanie zaawansowane\curren
 C:\Users\Hanna\OneDrive\Dokumenty\studia\3 rok\programowanie zaawansowane\currencyNew\currencyNew\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
 C:\Users\Hanna\OneDrive\Dokumenty\studia\3 rok\programowanie zaawansowane\currencyNew\currencyNew\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\Users\Hanna\OneDrive\Dokumenty\studia\3 rok\programowanie zaawansowane\currencyNew\currencyNew\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Hanna\OneDrive\Dokumenty\studia\3 rok\programowanie zaawansowane\currencyNew\currencyNew\bin\Debug\net5.0\nlog.config
+C:\Users\Hanna\OneDrive\Dokumenty\studia\3 rok\programowanie zaawansowane\currencyNew\currencyNew\bin\Debug\net5.0\NLog.dll
+C:\Users\Hanna\OneDrive\Dokumenty\studia\3 rok\programowanie zaawansowane\currencyNew\currencyNew\bin\Debug\net5.0\NLog.Extensions.Logging.dll

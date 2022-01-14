@@ -9,9 +9,6 @@ namespace currencyNew.DataTransferObjects
 {
     public class ExchangeRateDTO
     {
-        [Column("ExchangeRateId")]
-        public Guid Id { get; set; }
-
 
         [Required(ErrorMessage = "Date is required")]
         public DateTime Date { get; set; }

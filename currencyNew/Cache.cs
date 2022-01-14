@@ -40,6 +40,7 @@ namespace currencyNew
         public List<ExchangeRate> GetExchangeRates(RequestDTO requestDTO)
         {
             List<ExchangeRate> exchangeRates;
+            //if (requestDTO is null) Console.WriteLine("REQUESTDTO IS NULL!!!!!");
             bool exchangeRateExist = _dictionary.TryGetValue(requestDTO, out exchangeRates);
             if (exchangeRateExist) return exchangeRates;
             return null;
@@ -49,33 +50,33 @@ namespace currencyNew
             List<ExchangeRate> value;
             RequestDTO newRequestDTO = (RequestDTO)requestDTO.Clone();
             newRequestDTO.RequestDate = DateTime.Now;
-            Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            Console.WriteLine("dictionary przed updatem daty");
-            foreach (var entry in _dictionary)
-            {
-                Console.WriteLine(entry.Key.ToString());
-                foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
-            }
+            //Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            //Console.WriteLine("dictionary przed updatem daty");
+            //foreach (var entry in _dictionary)
+            //{
+            //    Console.WriteLine(entry.Key.ToString());
+            //    //foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
+            //}
 
             if (_dictionary.TryRemove(requestDTO, out value))
             {
-                Console.WriteLine("udalo sie usunac stary wpis");
-                Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-                Console.WriteLine("dictionary po usunieciu wpisu");
-                foreach (var entry in _dictionary)
-                {
-                    Console.WriteLine(entry.Key.ToString());
-                    foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
-                }
+                //Console.WriteLine("udalo sie usunac stary wpis");
+                //Console.WriteLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                //Console.WriteLine("dictionary po usunieciu wpisu");
+                //foreach (var entry in _dictionary)
+                //{
+                //    Console.WriteLine(entry.Key.ToString());
+                //    //foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
+                //}
                 _dictionary.TryAdd(newRequestDTO, value);
 
-                Console.WriteLine("++++++++++++++++++++++++++");
-                Console.WriteLine("dictionary po dodaniu nowego wpisu");
-                foreach (var entry in _dictionary)
-                {
-                    Console.WriteLine(entry.Key.ToString());
-                    foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
-                }
+                //Console.WriteLine("++++++++++++++++++++++++++");
+                //Console.WriteLine("dictionary po dodaniu nowego wpisu");
+                //foreach (var entry in _dictionary)
+                //{
+                //    Console.WriteLine(entry.Key.ToString());
+                //    //foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
+                //}
                 return newRequestDTO;
             }
             return null;
@@ -84,7 +85,7 @@ namespace currencyNew
         }
         public List<ExchangeRate> SaveExchangeRateList(RequestDTO requestDTO, List<UriExchangeRateData> uriExchangeRateDatas)
         {
-            List<ExchangeRate> convertedData = Helper.convertUriDataToExchangeRateDTOs(uriExchangeRateDatas);
+            List<ExchangeRate> convertedData = Helper.convertUriDataToExchangeRate(uriExchangeRateDatas);
             
             AddItemToDictionary(requestDTO, convertedData);
             return convertedData;
@@ -94,17 +95,25 @@ namespace currencyNew
         public void AddItemToDictionary(RequestDTO requestDTO, List<ExchangeRate> resultFromDataBase)
         {
 
-            int maxValue = 10;
-
+            int maxValue = 10, n = 1;
+            Console.WriteLine("DICTIONARY COUNT"+_dictionary.Count());
+            foreach (var entry in _dictionary)
+            {
+                Console.WriteLine(n + " " + entry.Key.ToString());
+                //foreach (var elem in entry.Value) Console.WriteLine(elem.ToString());
+                n++;
+            }
+            Console.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$");
             if (_dictionary.Count() == maxValue)
             {
                 RemoveTheOldestItemFromDictionary();
             }
-            if (!_dictionary.TryAdd(requestDTO, resultFromDataBase)) throw new Exception("add item to dict");
+
+            _dictionary.TryAdd(requestDTO, resultFromDataBase);
         }
         public void RemoveTheOldestItemFromDictionary()
         {
-            //DateTime dateToDelete = new DateTime(1900, 1, 1);
+            
             RequestDTO keyToDelete = _dictionary.Keys.FirstOrDefault();
 
             foreach (var item in _dictionary)
@@ -116,7 +125,7 @@ namespace currencyNew
                 }
 
             }
-            Console.WriteLine($"KEY TO DELETE: {keyToDelete}");
+            //Console.WriteLine($"KEY TO DELETE: {keyToDelete}");
             List<ExchangeRate> valuesDeleted;
             _dictionary.TryRemove(keyToDelete, out valuesDeleted);
         }
